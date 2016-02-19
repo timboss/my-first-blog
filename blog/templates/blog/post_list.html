@@ -5,8 +5,10 @@
     <body>
         <div>
             <h1><a href="">Tim's Django Blog</a></h1>
-        </div> <br />
-
+            <div align="right"><a href="/admin/">Login as admin</a></div>
+        </div>
+        
+        
 {% for post in posts %}
     <div>
         <h2><a href="">{{ post.title }}</a></h2> posted by <b>{{ post.author }}</b> on {{ post.published_date }}
