@@ -2,18 +2,24 @@
 
 {% block content %}
     <div class="post">
+        
         <div class="date">
-            <p>Drafted by {{ post.author }} on {{ post.created_date }}
+            
+            Drafted by {{ post.author }} on {{ post.created_date }}
             
             {% if post.published_date %}
                 <br>Published on {{ post.published_date }}
             {% else %}
-                (not yet published)
+                <br>(not yet published)
             {% endif %}
-            </p>
+            
         </div>
         
-        <h1>{{ post.title }}</h1>
+        <h1>{{ post.title }} 
+        {% if user.is_authenticated %}
+            <a class="btn btn-default" id="editbutton" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a> 
+        {% endif %}
+        </h1> 
         <p>{{ post.text|linebreaks }}</p>
         
     </div>
