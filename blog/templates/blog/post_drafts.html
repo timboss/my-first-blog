@@ -1,0 +1,23 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+        <h1 id="draf_header">Draft Posts</h1>
+            {% for post in posts %}
+                <div class="post">
+                    <div class="date">
+                        <p>Drafted by {{ post.author }} on {{ post.created_date }}
+                        <br>Not yet published</p>
+                    </div>
+            
+                    <h1><a href="{% url "post_detail" pk=post.pk %}">{{ post.title }}</a></h1>
+                    <p>{{ post.text|linebreaks }}</p>
+            
+                </div>
+            {% endfor %}
+    {% else %}
+        <div class="error">Please log in to view &amp; publish draft posts!</div>
+    {% endif %}
+    
+{% endblock %}

@@ -7,8 +7,12 @@ from .forms import PostForm
 
 
 def post_list(request):
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by("published_date")
+    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by("-published_date")
     return render(request, 'blog/post_list.html', {"posts":posts})
+
+def post_drafts(request):
+    posts = Post.objects.filter(published_date__isnull=True).order_by("-created_date")
+    return render(request, 'blog/post_drafts.html', {"posts":posts})
 
 def post_detail(request, pk):
     # post = Post.objects.get(pk=post_id) - This works, but would return a gnarly error if post_id doesn't exist!
@@ -21,13 +25,11 @@ def post_new(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
-            post.published_date = timezone.now()
+            #post.published_date = timezone.now() - Taking this out to implement a draft post queue, put back in to auto-publish drafts!
             post.save()
-            return redirect("post_detail", pk=post.pk)
-            
+            return redirect("post_detail", pk=post.pk)      
     else:
-        form = PostForm()
-        
+        form = PostForm()    
     return render(request, "blog/post_edit.html", {"form": form})
 
 def post_edit(request, pk):
