@@ -4,13 +4,18 @@
     {% for post in posts %}
         <div class="post">
             <div class="date">
-                <p>Drafted by {{ post.author }} on {{ post.created_date }}
+                <p>First drafted by {{ post.author }} on {{ post.created_date }}
                 <br>Published on {{ post.published_date }}</p>
             </div>
             
             <h1><a href="{% url "post_detail" pk=post.pk %}">{{ post.title }}</a></h1>
             <p>{{ post.text|linebreaks }}</p>
-            <a href="{% url "post_detail" pk=post.pk %}"> {{ post.approved_comments.count }} approved comments</a>
+            
+            <a href="{% url "post_detail" pk=post.pk %}"> {{ post.approved_comments.count }} approved comments
+            {% if user.is_authenticated and post.unapproved_comments %}
+                &amp; {{ post.unapproved_comments.count }} awaiting approval
+            {% endif %}
+            </a>
             
         </div>
     {% endfor %}
